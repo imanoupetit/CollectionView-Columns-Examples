@@ -8,7 +8,7 @@ class ColumnFlowLayout: UICollectionViewFlowLayout {
         get {
             guard let collectionView = collectionView else { return super.itemSize }
             let marginsAndInsets = sectionInset.left + sectionInset.right + minimumInteritemSpacing * CGFloat(cellsPerRow - 1)
-            let itemWidth = (collectionView.bounds.size.width - marginsAndInsets) / CGFloat(cellsPerRow)
+            let itemWidth = ((collectionView.bounds.size.width - marginsAndInsets) / CGFloat(cellsPerRow)).rounded(.down)
             return CGSize(width: itemWidth, height: itemWidth)
         }
         set {
@@ -31,16 +31,16 @@ class ColumnFlowLayout: UICollectionViewFlowLayout {
     
     override func invalidationContext(forBoundsChange newBounds: CGRect) -> UICollectionViewLayoutInvalidationContext {
         let context = super.invalidationContext(forBoundsChange: newBounds) as! UICollectionViewFlowLayoutInvalidationContext
-        context.invalidateFlowLayoutDelegateMetrics = newBounds.width != collectionView?.bounds.width || newBounds.height != collectionView?.bounds.height
+        context.invalidateFlowLayoutDelegateMetrics = newBounds != collectionView?.bounds
         return context
     }
-    
+        
 }
 
 class CollectionViewController1: UICollectionViewController {
     
     let columnLayout = ColumnFlowLayout(
-        cellsPerRow: 5,
+        cellsPerRow: 7,
         minimumInteritemSpacing: 10,
         minimumLineSpacing: 10,
         sectionInset: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -53,7 +53,7 @@ class CollectionViewController1: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 29
+        return 111
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
